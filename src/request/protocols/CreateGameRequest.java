@@ -2,7 +2,7 @@ package request.protocols;
 
 import java.io.Serializable;
 
-import database.Game;
+import dbase.Game;
 
 public class CreateGameRequest implements Serializable
 {
