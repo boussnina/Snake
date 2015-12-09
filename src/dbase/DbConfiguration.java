@@ -78,6 +78,7 @@ public class DbConfiguration
         return factoryBean.getObject();
     }
 
+    //Allows transactions to happen 
     @Bean
     public PlatformTransactionManager transactionManager()
     {

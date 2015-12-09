@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class SessionTool
 {
+	//This is the constructor, which accepts a session factory and save it in a local variable
     private final SessionFactory sessionFactory;
 
     public SessionTool(SessionFactory sessionFactory)
@@ -21,6 +22,7 @@ public class SessionTool
         return sessionFactory.getCurrentSession();
     }
 
+    //methods for CRUD @ database
     @Transactional
     public void save(Object object)
     {
