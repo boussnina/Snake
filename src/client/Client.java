@@ -45,6 +45,35 @@ public class Client
 	        {
 	            portString = "2345";
 	        }
+	        int port = Integer.parseInt(portString);
+	        
+	        try(Socket socket = new Socket(host, port))
+	        {
+	        	outputStream = new ObjectOutputStream(socket.getOutputStream());
+	            HelloRequest request = new HelloRequest();
+	            outputStream.writeObject(request);
+	            inputStream = new ObjectInputStream(socket.getInputStream());
+	            inputStream.readObject();
+	            System.out.println("Connection established");
+	        	
+	        }
+	        catch (Exception e){
+	        	e.printStackTrace();
+	        }
 	    }
+	    private Object sendRequest(Object request)
+	    {
+	        try
+	        {
+	            outputStream.writeObject(request);
+	            Object response = inputStream.readObject();
+	            return response;
+	        }catch(Exception e)
+	        {
+	            ;
+	        }
+	        return null;
+	    }
+	    
 
 }
