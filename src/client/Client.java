@@ -74,6 +74,24 @@ public class Client
 	        }
 	        return null;
 	    }
-	    
+	    private int readOption(String question, int min, int max)
+	    {
+	        while(true)
+	        {
+	            System.out.print(question);
+	            try
+	            {
+	                int option = Integer.parseInt(scanner.nextLine().trim());
+	                if(option >= min&& option <= max)
+	                {
+	                    return option;
+	                }
+	            }catch(Exception e)
+	            {
+	                ;
+	            }
+	            System.out.println("Invalid input!");
+	        }
+	    }
 
 }
