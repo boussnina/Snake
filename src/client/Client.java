@@ -29,5 +29,22 @@ public class Client
 	    private ObjectInputStream inputStream;
 	    private ObjectOutputStream outputStream;
 	    private String username;
+	    
+	    public void start(){
+	 
+	    	System.out.print("Enter host: ");
+	        String host = scanner.nextLine().trim();
+	        if(host.length() == 0)
+	        {
+	            host = "localhost";
+	        }
+	        
+	        System.out.print("Enter server portnumber : ");
+	        String portString = scanner.nextLine().trim();
+	        if(portString.length() == 0)
+	        {
+	            portString = "2345";
+	        }
+	    }
 
 }
