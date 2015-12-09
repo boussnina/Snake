@@ -7,18 +7,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 
-import protocol.CreateGameRequest;
-import protocol.DeleteGameRequest;
-import protocol.GetGameRequest;
-import protocol.GetHighScoresRequest;
-import protocol.HelloRequest;
-import protocol.LoginRequest;
-import protocol.LogoutRequest;
-import protocol.PlayGameRequest;
-import protocol.SetCommandsRequest;
-import server.backend.Services;
-import database.Game;
-import database.User;
+import request.protocols.CreateGameRequest;
+import request.protocols.DeleteGameRequest;
+import request.protocols.GetGameRequest;
+import request.protocols.GetHighScoresRequest;
+import request.protocols.HelloRequest;
+import request.protocols.LoginRequest;
+import request.protocols.LogoutRequest;
+import request.protocols.PlayGameRequest;
+import request.protocols.SetCommandsRequest;
+import serv.backend.Services;
+import dbase.Game;
+import dbase.User;
 
 public class Server
 {
