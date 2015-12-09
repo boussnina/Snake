@@ -56,11 +56,184 @@ public class Client
 	            inputStream.readObject();
 	            System.out.println("Connection established");
 	        	
-	        }
-	        catch (Exception e){
-	        	e.printStackTrace();
+	            while(!this.login())
+	            {
+	                ;
+	            }
+	            
+	            // Execute operaions.
+	            options:
+	            while(true)
+	            {
+	                try
+	                {
+	                    int option = this.readOption("1. Create a game 2. Set commands 3. Get high scores 4. Delete a game 5. Start a game 6. Show a game 7. Logout : ", 1, 7);
+	                    switch(option)
+	                    {
+	                    case 1: this.createGame(); break;
+	                    case 2: this.setCommands(); break;
+	                    case 3: this.getHighScores(); break;
+	                    case 4: this.deleteGame(); break;
+	                    case 5: this.startGame(); break;
+	                    case 6: this.showGame(); break;
+	                    case 7: this.logout(); break options;
+	                    }
+	                }catch(Exception e)
+	                {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }catch(Exception e)
+	        {
+	            throw new RuntimeException(e);
 	        }
 	    }
+	    
+	    private boolean login()
+	    {
+	        System.out.print("Username? [Admin]: ");
+	        username = scanner.nextLine();
+	        if(username.length() == 0)
+	        {
+	            username = "Admin";
+	        }
+
+	        System.out.print("Password? [password]: ");
+	        String password = scanner.nextLine();
+	        if(password.length() == 0)
+	        {
+	            password = "password";
+	        }
+	        
+	        LoginRequest request = new LoginRequest();
+	        request.setUsername(username);
+	        request.setPassword(password);
+	        String loginKey = (String) this.sendRequest(request);
+	        boolean successful = loginKey != null;
+	        System.out.println(successful ? "Logged in successfully." : "Failed to login.");
+	        
+	        return successful;
+	    }
+	    private void logout()
+	    {
+	        LogoutRequest request = new LogoutRequest();
+	        request.setUsername(username);
+	        this.sendRequest(request);
+	    }
+	    
+	    private void createGame()
+	    {
+	        System.out.print("Enter game name: ");
+	        String name = scanner.nextLine();
+	        
+	        CreateGameRequest request = new CreateGameRequest();
+	        Game game = new Game();
+	        request.setGame(game);
+	        game.setName(name);
+	        
+	        Game resultGame = (Game) this.sendRequest(request);
+	        System.out.println(resultGame == null ? "Could not create game: \"" + name + "\"." :"Game \"" + name + "\" was succesfully created.");
+	    }
+	    
+	    private void setCommands()
+	    {
+	        System.out.print("Enter game name: ");
+	        String name = scanner.nextLine();
+	        
+	        System.out.print("Enter commands ");
+	        String commands = scanner.nextLine();
+	        
+	        SetCommandsRequest request = new SetCommandsRequest();
+	        request.setUsername(username);
+	        request.setGameName(name);
+	        request.setCommands(commands);
+	        
+	        boolean successful = (boolean) this.sendRequest(request);
+	        System.out.println(successful ? "Commands set successfully." : "Failed to set commands.");
+	    }
+	    
+	    private void getHighScores()
+	    {
+	        GetHighScoresRequest request = new GetHighScoresRequest();
+	        request.setNumber(10);
+	        
+	        List<Game> games = (List<Game>) this.sendRequest(request);
+	        System.out.println("High scores:");
+	        int index = 1;
+	        for(Game game : games)
+	        {
+	            System.out.println(index + "\t\t" + game.getName() + "\t\t" + game.getHighScore());
+	            index++;
+	        }
+	    }
+	    
+	    private void deleteGame()
+	    {
+	        System.out.print("Enter game name: ");
+	        String name = scanner.nextLine();
+	        
+	        DeleteGameRequest request = new DeleteGameRequest();
+	        request.setName(name);
+	        
+	        boolean successful = (boolean) this.sendRequest(request);
+	        System.out.println(successful ? "Game \"" + name + "\" deleted successfully." : "Failed to delete game \"" + name + "\".");
+	    }
+	    
+	    private void startGame()
+	    {
+	        System.out.print("Enter game name: ");
+	        String name = scanner.nextLine();
+	        
+	        PlayGameRequest request = new PlayGameRequest();
+	        request.setName(name);
+	        
+	        Game game = (Game) this.sendRequest(request);
+	        if(game == null)
+	        {
+	            System.out.println("The entered game does not exist.");
+	            return;
+	        }
+	        
+	        System.out.println(game.getPlayer1() + " V.S. " + game.getPlayer2());
+	        System.out.println(game.getLastResult());
+	    }
+	    
+	    private void showGame()
+	    {
+	        System.out.print("Enter game name: ");
+	        String name = scanner.nextLine();
+	        
+	        GetGameRequest request = new GetGameRequest();
+	        request.setName(name);
+	        
+	        Game game = (Game) this.sendRequest(request);
+	        if(game == null)
+	        {
+	            System.out.println("The entered game does not exist.");
+	            return;
+	        }
+	        
+	        System.out.println(game.getName());
+	        
+	        String player1 = game.getPlayer1();
+	        if(player1 != null)
+	        {
+	            System.out.println(player1 + ": " + game.getCommands1());
+	        }
+	        
+	        String player2 = game.getPlayer2();
+	        if(player2 != null)
+	        {
+	            System.out.println(player2 + ": " + game.getCommands2());
+	        }
+	        
+	        String result = game.getLastResult();
+	        if(result != null)
+	        {
+	            System.out.println(result);
+	        }
+	    }
+	            
 	    private Object sendRequest(Object request)
 	    {
 	        try
