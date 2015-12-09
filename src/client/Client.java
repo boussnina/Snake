@@ -17,6 +17,17 @@ import request.protocols.PlayGameRequest;
 import request.protocols.SetCommandsRequest;
 import dbase.Game;
 
-public class Client {
+@SuppressWarnings("unchecked")
+public class Client
+{
+	    public static void main(String[] strings)
+	    {
+	        new Client().start();
+	    }
+	    
+	    private final Scanner scanner = new Scanner(System.in);
+	    private ObjectInputStream inputStream;
+	    private ObjectOutputStream outputStream;
+	    private String username;
 
 }
