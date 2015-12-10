@@ -22,6 +22,7 @@ import database.User;
 
 public class Server
 {
+	//server is created and start method called
     public static void main(String[] strings)
     {
         new Server(2345).start();
@@ -33,7 +34,7 @@ public class Server
     {
         this.port = port;
     }
-    
+    //creating socket that awaits requests from client
     public void start()
     {
         try(ServerSocket serverSocket = new ServerSocket(port))
@@ -65,6 +66,7 @@ public class Server
         @Override
         public void run()
         {
+        	//Getting i/o streams
             try(ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());)
             {
@@ -86,7 +88,7 @@ public class Server
                 ;
             }
         }
-        
+        //Execution of requests
         private boolean handleRequest(ObjectInputStream inputStream, ObjectOutputStream outputStream) throws Exception
         {
             Object request = inputStream.readObject();

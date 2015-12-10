@@ -36,7 +36,7 @@ public class Services
             throw new RuntimeException(e);
         }
         
-        // Create the admin if not exist.
+        // Creates admin
         User admin = INSTANCE.getUserByUsername(ADMIN_USERNAME);
         if(admin == null)
         {
@@ -64,6 +64,7 @@ public class Services
     @Transactional
     public String login(String username, String password)
     {
+    	//gets user info
         Criteria criteria = sessionTool.getCurrentSession().createCriteria(User.class);
         criteria.add(Restrictions.eq("username", username));
         criteria.add(Restrictions.eq("password", password));
@@ -73,7 +74,7 @@ public class Services
         {
             return null;
         }
-        
+        //generates loginkey upon login and updates in the DB
         User user = users.get(0);
         String loginKey = UUID.randomUUID().toString();
         user.setLoginKey(loginKey);
@@ -99,6 +100,7 @@ public class Services
      * @param user
      * @return
      */
+    // continual methods of references to sessiontools (DB crud)
     public User add(User user)
     {
         sessionTool.save(user);
@@ -278,14 +280,14 @@ public class Services
     {
         switch(command)
         {
-        case 'n':
-        case 'N': position.y--; break;
         case 's':
-        case 'S': position.y++; break;
+        case 'S': position.y--; break;
         case 'w':
-        case 'W': position.x--; break;
-        case 'e':
-        case 'E': position.x++; break;
+        case 'W': position.y++; break;
+        case 'a':
+        case 'A': position.x--; break;
+        case 'd':
+        case 'D': position.x++; break;
         }
         
         if(position.x < 0|| position.x >= size.x|| position.y < 0|| position.y >= size.y)

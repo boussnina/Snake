@@ -20,6 +20,7 @@ import database.Game;
 @SuppressWarnings("unchecked")
 public class Client
 {
+	//main method + running start method
     public static void main(String[] strings)
     {
         new Client().start();
@@ -29,7 +30,7 @@ public class Client
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private String username;
-    
+    //The method that is called when the client is launched
     public void start()
     {
         System.out.print("Server host? [localhost]: ");
@@ -46,10 +47,10 @@ public class Client
             portString = "2345";
         }
         int port = Integer.parseInt(portString);
-        
+        //trying to establish connection through the socket
         try(Socket socket = new Socket(host, port))
         {
-            // Establish connection and create streams.
+            //creating i/o streams
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             HelloRequest request = new HelloRequest();
             request.setName("world");
@@ -58,13 +59,13 @@ public class Client
             inputStream.readObject();
             System.out.println("Server connected.");
             
-            // Login.
+            // login.
             while(!this.login())
             {
                 ;
             }
             
-            // Execute operaions.
+            // Executing users input
             options:
             while(true)
             {
@@ -91,7 +92,7 @@ public class Client
             throw new RuntimeException(e);
         }
     }
-    
+    //the seperate methods of the users input
     private boolean login()
     {
         System.out.print("Username? [Admin]: ");

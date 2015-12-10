@@ -15,10 +15,12 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
  
+//allows configurations through annotations
 @Configuration
 @EnableTransactionManagement
 public class DbConfiguration
 {
+	//Db is defined
     public static final String DB_PROPERTIES_PATH = "/db.properties";
     public static final String DRIVER_CLASS_NAME = "driverClassName";
     public static final String URL = "url";
@@ -28,6 +30,7 @@ public class DbConfiguration
     @Bean
     public DataSource dataSource()
     {
+    	//defines destination
         InputStream inputStream = DbConfiguration.class.getResourceAsStream(DB_PROPERTIES_PATH);
         Properties properties = new Properties();
         try
@@ -55,6 +58,7 @@ public class DbConfiguration
         factoryBean.setDataSource(this.dataSource());
         factoryBean.setPackagesToScan("database");
         {
+        	//hibernate properties are set
             Properties properties = new Properties();
             factoryBean.setHibernateProperties(properties);
             properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
