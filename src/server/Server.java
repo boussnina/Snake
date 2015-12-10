@@ -22,6 +22,7 @@ import dbase.User;
 
 public class Server
 {
+	//server created
     public static void main(String[] strings)
     {
         new Server(2345).start();
@@ -36,9 +37,10 @@ public class Server
     
     public void start()
     {
+    	//opening socket that awaits requests
         try(ServerSocket serverSocket = new ServerSocket(port))
         {
-            System.out.println("Server started at " + port + ".");
+            System.out.println("Server connected at " + port + ".");
             while(true)
             {
                 Socket socket = serverSocket.accept();
@@ -65,6 +67,7 @@ public class Server
         @Override
         public void run()
         {
+        	//gets stream which allows recieving and sending data 
             try(ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());)
             {
@@ -86,7 +89,7 @@ public class Server
                 ;
             }
         }
-        
+        //requests are handled depending on userinput
         private boolean handleRequest(ObjectInputStream inputStream, ObjectOutputStream outputStream) throws Exception
         {
             Object request = inputStream.readObject();

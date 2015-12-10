@@ -20,6 +20,7 @@ import dbase.Game;
 @SuppressWarnings("unchecked")
 public class Client
 {
+	//Runs client and start method
 	    public static void main(String[] strings)
 	    {
 	        new Client().start();
@@ -29,7 +30,7 @@ public class Client
 	    private ObjectInputStream inputStream;
 	    private ObjectOutputStream outputStream;
 	    private String username;
-	    
+	    //The start method will ask for ip + port nr
 	    public void start(){
 	 
 	    	System.out.print("Enter host: ");
@@ -47,8 +48,10 @@ public class Client
 	        }
 	        int port = Integer.parseInt(portString);
 	        
+	        //after ip + host is entered - will try to establish connection
 	        try(Socket socket = new Socket(host, port))
 	        {
+	        	//i/o streams are created
 	        	outputStream = new ObjectOutputStream(socket.getOutputStream());
 	            HelloRequest request = new HelloRequest();
 	            outputStream.writeObject(request);
@@ -88,7 +91,7 @@ public class Client
 	            throw new RuntimeException(e);
 	        }
 	    }
-	    
+	    //methods for user options 
 	    private boolean login()
 	    {
 	        System.out.print("Username? [Admin]: ");
