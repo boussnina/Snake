@@ -92,7 +92,33 @@ public class Client
             throw new RuntimeException(e);
         }
     }
-    //the seperate methods of the users input
+    
+  //the seperate methods of the users input
+    private void logout()
+    {
+        LogoutRequest request = new LogoutRequest();
+        request.setUsername(username);
+        this.sendRequest(request);
+    }
+    
+
+    private void setCommands()
+    {
+        System.out.print("Game name? ");
+        String name = scanner.nextLine();
+        
+        System.out.print("Commands? ");
+        String commands = scanner.nextLine();
+        
+        SetCommandsRequest request = new SetCommandsRequest();
+        request.setUsername(username);
+        request.setGameName(name);
+        request.setCommands(commands);
+        
+        boolean successful = (boolean) this.sendRequest(request);
+        System.out.println(successful ? "Commands set successfully." : "Failed to set commands.");
+    }
+    
     private boolean login()
     {
         System.out.print("Username? [Admin]: ");
@@ -119,11 +145,19 @@ public class Client
         return successful;
     }
     
-    private void logout()
+    private void getHighScores()
     {
-        LogoutRequest request = new LogoutRequest();
-        request.setUsername(username);
-        this.sendRequest(request);
+        GetHighScoresRequest request = new GetHighScoresRequest();
+        request.setNumber(10);
+        
+        List<Game> games = (List<Game>) this.sendRequest(request);
+        System.out.println("High scores:");
+        int index = 1;
+        for(Game game : games)
+        {
+            System.out.println(index + "\t\t" + game.getName() + "\t\t" + game.getHighScore());
+            index++;
+        }
     }
     
     private void createGame()
@@ -140,37 +174,6 @@ public class Client
         System.out.println(resultGame == null ? "Failed to create game \"" + name + "\"." :"Game \"" + name + "\" created successfully.");
     }
     
-    private void setCommands()
-    {
-        System.out.print("Game name? ");
-        String name = scanner.nextLine();
-        
-        System.out.print("Commands? ");
-        String commands = scanner.nextLine();
-        
-        SetCommandsRequest request = new SetCommandsRequest();
-        request.setUsername(username);
-        request.setGameName(name);
-        request.setCommands(commands);
-        
-        boolean successful = (boolean) this.sendRequest(request);
-        System.out.println(successful ? "Commands set successfully." : "Failed to set commands.");
-    }
-    
-    private void getHighScores()
-    {
-        GetHighScoresRequest request = new GetHighScoresRequest();
-        request.setNumber(10);
-        
-        List<Game> games = (List<Game>) this.sendRequest(request);
-        System.out.println("High scores:");
-        int index = 1;
-        for(Game game : games)
-        {
-            System.out.println(index + "\t\t" + game.getName() + "\t\t" + game.getHighScore());
-            index++;
-        }
-    }
     
     private void deleteGame()
     {
